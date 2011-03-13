@@ -1,7 +1,5 @@
 package main
 {
-	import com.greensock.TweenLite;
-	
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.external.ExternalInterface;
@@ -10,9 +8,9 @@ package main
 	import main.mvc.controller.Background;
 	import main.mvc.controller.Contact;
 	import main.mvc.controller.Content;
-	import main.mvc.controller.Controller;
 	import main.mvc.controller.Footer;
 	import main.mvc.controller.Foreground;
+	import main.mvc.controller.GridTile;
 	import main.mvc.controller.Job;
 	import main.mvc.controller.Menu;
 	import main.mvc.controller.Window;
@@ -38,18 +36,19 @@ package main
 			Background.viewClass 	= getClassFromSwf("Background");
 			Contact.viewClass 		= getClassFromSwf("Contact");
 			Footer.viewClass 		= getClassFromSwf("Footer");
+			GridTile.viewClass 		= getClassFromSwf("GridTile");
 			Job.viewClass 			= getClassFromSwf("Job");
 			Menu.viewClass 			= getClassFromSwf("Menu");
 			Window.viewClass 		= getClassFromSwf("Window");
 			
 			addChild( Background.instance );
-			addChild( Foreground.instance );
+			addChild( Foreground.instance ); 
 			
 			Foreground.instance.addChild( Content.instance );
 			Foreground.instance.addChild( Footer.instance );
 			Foreground.instance.addChild( Menu.instance );
 			
-			Content.instance.y = 140;
+			Content.instance.y = 130;
 			
 			Content.instance.showJobs();
 			
@@ -60,9 +59,10 @@ package main
 		public function redistribute(e:Event = null):void
 		{
 			
-			Footer.instance.y  = Math.max(1000, Content.instance.y + Content.instance.height + 100);
+			Footer.instance.y  = Math.max(1000, Content.instance.y + Content.instance.height - 120);
 			
 			Content.instance.redistribute();
+			Footer.instance.redistribute();
 			Menu.instance.redistribute();
 
 			fixHeight( Foreground.instance );

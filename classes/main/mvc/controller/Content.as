@@ -7,7 +7,9 @@ package main.mvc.controller
 	import main.Application;
 	import main.shared.Global;
 	
+	import org.edgardz.utils.distribute;
 	import org.edgardz.utils.rand;
+	import org.edgardz.utils.removeChildrensFrom;
 	
 	public class Content extends Sprite
 	{
@@ -16,6 +18,8 @@ package main.mvc.controller
 		{ if(_instance == null) _instance = new Content(); return _instance; }
 		
 		public var jobContainer		:Sprite;
+		public var gridContainer	:Sprite;		
+		
 		public var activeContent	:Array;
 		
 		public function Content()
@@ -24,41 +28,64 @@ package main.mvc.controller
 			
 			activeContent = [0,0,0];
 			
-			jobContainer = new Sprite();
+			jobContainer 	= new Sprite();
+			gridContainer 	= new Sprite();
 			
+			addChild( gridContainer );
 			addChild( jobContainer );
 		}
 		
 		public function showJobs():void
 		{
-			for( var i:int = 0; i < 5; i++ )
+			if( jobContainer.numChildren == 0 )
 			{
-				var job:Job = new Job("Job Teste " + i);
-					job.y = 650 * i;
-
-				TweenLite.delayedCall( i, jobContainer.addChild, [job] );
+				for( var i:int = 0; i < 5; i++ )
+				{
+					var job:Job = new Job("Job Teste " + i);
+						job.y = 650 * i;
+	
+					TweenLite.delayedCall( i, jobContainer.addChild, [job] );
+				}
+				
+				jobContainer.y = 100;
 			}
 			
-			jobContainer.y = 100;
-			
-			activeContent[0] = 1;
+			activeContent = [1,0,0];
 			
 			Menu.instance.updateButtons( activeContent );
 		}
 		
 		public function showAbout():void
 		{
-			
+			activeContent = [1,1,0];
+			Menu.instance.updateButtons( activeContent );
 		}
 		
 		public function showContact():void
 		{
-			
+			activeContent = [1,0,1];
+			Menu.instance.updateButtons( activeContent );
 		}
 		
 		public function redistribute():void
 		{
 			jobContainer.x = (Global.stage.stageWidth >> 1) - (jobContainer.width >> 1);
+
+			var cols :int = Math.ceil( Global.stage.stageWidth / 100 );
+			var rows :int = Math.ceil( jobContainer.height / 100 )+2;
+			var total:int = cols * rows;
+			
+			removeChildrensFrom( gridContainer );
+			
+			for( var i:int = 0; i < total; i++ ) 
+			{
+				var tile : GridTile = new GridTile(); 
+					tile.x = distribute( tile, i, cols ).x;
+					tile.y = distribute( tile, i, cols ).y; 
+					
+				gridContainer.addChild( tile );
+			}
+			
 		}
 	}
 }

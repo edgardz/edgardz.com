@@ -2,6 +2,10 @@ package main
 {
 	import com.greensock.OverwriteManager;
 	import com.greensock.plugins.AutoAlphaPlugin;
+	import com.greensock.plugins.BlurFilterPlugin;
+	import com.greensock.plugins.ColorTransformPlugin;
+	import com.greensock.plugins.GlowFilterPlugin;
+	import com.greensock.plugins.RoundPropsPlugin;
 	import com.greensock.plugins.TweenPlugin;
 	
 	import flash.display.Loader;
@@ -33,7 +37,7 @@ package main
 			
 			Global.stage = stage;
 			
-			TweenPlugin.activate( [ AutoAlphaPlugin ] );
+			TweenPlugin.activate( [ AutoAlphaPlugin, RoundPropsPlugin, BlurFilterPlugin, GlowFilterPlugin, ColorTransformPlugin ] );
 			OverwriteManager.init();
 			
 			appLoader = new Loader();
