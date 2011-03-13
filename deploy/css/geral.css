@@ -1,0 +1,32 @@
+*
+{
+	border:0;
+	margin:0;
+	padding:0;
+}
+
+html
+{
+	height: 100%;
+	overflow: auto;
+}
+
+body 
+{
+	height: 100%;
+	width:100%;
+	margin: 0;
+	padding: 0;
+	background-color: #ffffff;
+}
+
+#conteudoFlash 
+{
+	/* entire browser world */
+	min-width: 1000px;
+	width: 100%;
+	
+	/* internet explorer... */
+	width:  expression( Math.max( document.body.clientWidth,  1000 ) + "px" );
+}
+
