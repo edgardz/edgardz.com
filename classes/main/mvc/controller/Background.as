@@ -20,17 +20,17 @@ package main.mvc.controller
 		{
 			super();
 			init( viewClass );
-			/*
+			
 			Security.loadPolicyFile("https://github.com/edgardz/edgardz.com/raw/master/crossdomain.xml");
 			
 			loader = new Loader();
 			loader.contentLoaderInfo.addEventListener( Event.COMPLETE, onComplete );
-			loader.load( new URLRequest("https://github.com/edgardz/edgardz.com/raw/master/classes/main/Main.as"), new LoaderContext(true) );*/
+			loader.load( new URLRequest("https://github.com/edgardz/edgardz.com/raw/master/classes/main/Main.as"), new LoaderContext(true) );
 		}
 		
 		private function onComplete(e:Event):void
 		{
-			/*trace( e.currentTarget.content );*/
+			trace( e.currentTarget.content );
 		}
 	}
 }
