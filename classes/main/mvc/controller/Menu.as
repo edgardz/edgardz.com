@@ -42,6 +42,8 @@ package main.mvc.controller
 			addMouseListeners( view.buttons.gallery, 	null, 		  null, 	   onButtonClick );
 			addMouseListeners( view.buttons.about, 		onButtonOver, onButtonOut, onButtonClick );
 			addMouseListeners( view.buttons.contact, 	onButtonOver, onButtonOut, onButtonClick );
+			
+			addMouseListeners( view.source, null, null, Foreground.instance.showSource );
 		}
 		
 		private function onButtonOver(e:MouseEvent):void

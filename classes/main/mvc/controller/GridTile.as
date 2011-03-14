@@ -8,6 +8,8 @@ package main.mvc.controller
 		{
 			super();
 			init( viewClass );
+			
+			view.tile.alpha = 0.8; 
 		}
 	}
 }

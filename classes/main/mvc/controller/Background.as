@@ -1,11 +1,14 @@
 package main.mvc.controller
 {
-	import flash.display.Loader;
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
-	import flash.system.LoaderContext;
-	import flash.system.Security;
+	import flash.utils.Dictionary;
+	
+	import main.shared.Global;
+	
+	import org.edgardz.utils.Layer;
+	import org.edgardz.utils.addMouseListeners;
 
 	public class Background extends Controller
 	{
@@ -14,23 +17,77 @@ package main.mvc.controller
 		{ if(_instance == null) _instance = new Background(); return _instance; }
 		public static var viewClass	: Class;
 		
-		private var loader : Loader;
+		private var classesURL	:Array = 
+		[	
+			"../classes/main/Main.as",
+			"../classes/main/Application.as",
+			
+			"../classes/main/shared/Global.as",
+			
+			"../classes/main/mvc/controller/About.as",
+			"../classes/main/mvc/controller/Background.as",
+			"../classes/main/mvc/controller/BackgroundSource.as",
+			"../classes/main/mvc/controller/Contact.as",
+			"../classes/main/mvc/controller/Content.as",
+			"../classes/main/mvc/controller/Controller.as",
+			"../classes/main/mvc/controller/Footer.as",
+			"../classes/main/mvc/controller/Foreground.as",
+			"../classes/main/mvc/controller/GridTile.as",
+			"../classes/main/mvc/controller/Job.as",
+			"../classes/main/mvc/controller/Menu.as",
+			"../classes/main/mvc/controller/window.as",
+
+			//"../classes/main/mvc/model/???",
+			
+			"../classes/main/mvc/view/View.as"
+		];
+		
+		private var loader : URLLoader;
+		
+		private var dict   :Dictionary;
 		
 		public function Background()
 		{
 			super();
 			init( viewClass );
 			
-			Security.loadPolicyFile("https://github.com/edgardz/edgardz.com/raw/master/crossdomain.xml");
+			dict = new Dictionary();
 			
-			loader = new Loader();
-			loader.contentLoaderInfo.addEventListener( Event.COMPLETE, onComplete );
-			loader.load( new URLRequest("https://github.com/edgardz/edgardz.com/raw/master/classes/main/Main.as"), new LoaderContext(true) );
+			loadNextSource();
+			
+			addMouseListeners( view.back, null, null, Foreground.instance.hideSource );
+		}
+		
+		private function loadNextSource():void
+		{
+			if( classesURL.length > 0 )
+			{
+				var loader:URLLoader = new URLLoader();
+					loader.addEventListener( Event.COMPLETE, onComplete, false, 0, true );
+					loader.load( new URLRequest(classesURL[0]) );
+				
+				var source : BackgroundSource = new BackgroundSource();
+					source.y = (view.numChildren == 1) ? 0 : view.height;
+					
+				view.addChild( source );
+				
+				dict[loader] = source;
+				
+				classesURL.shift();
+			}
+			
+			Layer.toTop( view.back );
 		}
 		
 		private function onComplete(e:Event):void
 		{
-			trace( e.currentTarget.content );
+			dict[e.currentTarget].text = e.currentTarget.data;
+			loadNextSource(); 
+		}
+		
+		public function redistribute():void
+		{
+			view.back.x = Global.stage.stageWidth - 25;
 		}
 	}
 }

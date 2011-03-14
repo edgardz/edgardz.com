@@ -1,3 +1,14 @@
+
+/*
+* 
+*
+*			Full source code can be found in https://github.com/edgardz/edgardz.com
+*
+*
+*/
+
+
+
 package main
 {
 	import com.greensock.OverwriteManager;

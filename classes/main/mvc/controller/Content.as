@@ -39,9 +39,9 @@ package main.mvc.controller
 		{
 			if( jobContainer.numChildren == 0 )
 			{
-				for( var i:int = 0; i < 5; i++ )
+				for( var i:int = 0; i < Global.siteData.jobs.length; i++ )
 				{
-					var job:Job = new Job("Job Teste " + i);
+					var job:Job = new Job( Global.siteData.jobs[i].title );
 						job.y = 650 * i;
 	
 					TweenLite.delayedCall( i, jobContainer.addChild, [job] );
