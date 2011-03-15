@@ -3,24 +3,27 @@
 	[
 		{
 			"title":"Job Teste 1",
-			"images":["image1.jpg, image2.jpg"],
+			"images":["image1.jpg", "image2.jpg"],
 			"client":"Cliente teste",
 			"plataform":"Plataforma teste",
-			"agency":"agencia teste"
+			"agency":"agencia teste",
+			"roles":"teste toles"
 		},
 		{
 			"title":"Job Teste 2",
-			"images":["image1.jpg, image2.jpg"],
+			"images":["image1.jpg", "image2.jpg"],
 			"client":"Cliente teste",
 			"plataform":"Plataforma teste",
-			"agency":"agencia teste"
+			"agency":"agencia teste",
+			"roles":"teste toles"
 		},
 		{
 			"title":"Job Teste 3",
-			"images":["image1.jpg, image2.jpg"],
+			"images":["image1.jpg", "image2.jpg"],
 			"client":"Cliente teste",
 			"plataform":"Plataforma teste",
-			"agency":"agencia teste"
+			"agency":"agencia teste",
+			"roles":"teste toles"
 		}
 	]
 }

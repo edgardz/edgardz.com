@@ -35,11 +35,11 @@ package main.mvc.controller
 			"../classes/main/mvc/controller/GridTile.as",
 			"../classes/main/mvc/controller/Job.as",
 			"../classes/main/mvc/controller/Menu.as",
-			"../classes/main/mvc/controller/window.as",
+			"../classes/main/mvc/controller/Window.as",
 
 			//"../classes/main/mvc/model/???",
 			
-			"../classes/main/mvc/view/View.as"
+			"../classes/main/mvc/view/View.as" 
 		];
 		
 		private var loader : URLLoader;

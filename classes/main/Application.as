@@ -33,7 +33,7 @@ package main
 		private var dataLoader	:URLLoader;
 		
 		public function Application()
-		{
+		{ 
 			_instance = this;
 
 			dataLoader = new URLLoader();

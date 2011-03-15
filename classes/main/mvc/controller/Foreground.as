@@ -40,7 +40,7 @@ package main.mvc.controller
 		{
 			codeVisible = true;
 			setSnapshotMode( true );
-			TweenLite.to( this, 1, {x:Global.stage.stageWidth, ease:Expo.easeInOut} );
+			TweenLite.to( this, 1, {x:Global.stage.stageWidth + 50, ease:Expo.easeInOut} );
 			Application.instance.fixHeight( Background.instance );
 		}
 		
