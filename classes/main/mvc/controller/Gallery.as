@@ -1,10 +1,17 @@
 package main.mvc.controller
 {
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Expo;
+	
 	import flash.display.Sprite;
+	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.geom.Point;
 	
 	import main.shared.Global;
 	
+	import org.edgardz.utils.addMouseListeners;
+	import org.edgardz.utils.distance;
 	import org.edgardz.utils.distribute;
 
 	public class Gallery extends Sprite
@@ -26,6 +33,8 @@ package main.mvc.controller
 			
 			addChild( thumbContainer );
 			addChild( Job.instance );
+			
+			//Global.stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove, false, 0, true );
 		}
 		
 		public function show():void
@@ -38,10 +47,11 @@ package main.mvc.controller
 				for( i; i < Global.siteData.jobs.length; i++ )
 				{
 					thumb 	= new Thumb( Global.siteData.jobs[i].title, Global.siteData.jobs[i].thumb, i );
-					thumb.addEventListener( MouseEvent.CLICK, showJob, false, 0, true );
-					thumb.x = distribute( thumb, i, 3, 60 ).x;
-					thumb.y = distribute( thumb, i, 3, 60 ).y;
+					thumb.x = distribute( thumb, i, 3, 60 ).x + 125;
+					thumb.y = distribute( thumb, i, 3, 60 ).y + 75;
 					
+					addMouseListeners(thumb, onThumbMouse, onThumbMouse, showJob);
+
 					thumbContainer.addChild( thumb );
 				}
 			}
@@ -57,6 +67,34 @@ package main.mvc.controller
 			Job.instance.hide();
 
 			redistribute();
+		}
+		
+		private function onThumbMouse(e:MouseEvent):void
+		{
+			var i		 :int;
+			var thumb	 :Thumb;
+			var tgtScale :Number;
+			
+			if(e.type == MouseEvent.ROLL_OVER)
+			{
+				for( i = 0; i < thumbContainer.numChildren; i++ )
+				{
+					thumb = thumbContainer.getChildAt(i) as Thumb;
+					//tgtScale = 1.1 - ( distance(thumb, e.currentTarget) * 0.0005 );
+					tgtScale = thumb == e.currentTarget ? 1.05 : 1.0;
+					TweenLite.killTweensOf( thumb );
+					TweenLite.to( thumb, 0.4, {scaleX:tgtScale, scaleY:tgtScale, ease:Expo.easeOut} );
+				}
+			}
+			else
+			{
+				for( i = 0; i < thumbContainer.numChildren; i++ )
+				{
+					thumb = thumbContainer.getChildAt(i) as Thumb;
+					tgtScale = 1.0;
+					TweenLite.to( thumb, 0.4, {scaleX:tgtScale, scaleY:tgtScale, ease:Expo.easeOut} );
+				}
+			}
 		}
 		
 		private function showJob(e:MouseEvent):void

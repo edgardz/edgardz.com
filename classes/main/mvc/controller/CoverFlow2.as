@@ -40,6 +40,8 @@ package main.mvc.controller
 		
 		private var imagesURL	:Array;
 		
+		private var loading	:Loading;
+		
 		public function CoverFlow2( imgWidth:int, imgHeight:int )
 		{
 			super();
@@ -60,14 +62,17 @@ package main.mvc.controller
 			
 			addMouseListeners( container, onMouseOver, onMouseOut, null, false, true );
 			
+			loading = new Loading();
+			
+			addChild( loading );
 			addChild( container );
 			
 			mascara = new Bitmap( new BitmapData(imgWidth, imgHeight) );
 			mascara.x = -imgWidth / 2;
-			mascara.y = -imgHeight / 2;
+			mascara.y = -imgHeight / 2;  
 			addChild( mascara );
 			
-			container.mask = mascara;
+			container.mask = mascara; 
 			
 			lastSnap 		= new Point(0,0);
 			newSnap  		= new Point(0,0);
@@ -88,6 +93,8 @@ package main.mvc.controller
 			imageList = [];
 			removeChildrensFrom( container );
 			
+			loading.visible = true;
+			
 			imagesURL = [];
 			imagesURL = urls;
 			loadNextImage();
@@ -105,6 +112,8 @@ package main.mvc.controller
 		
 		private function onImageLoaded(e:Event):void
 		{
+			loading.visible = false;
+			
 			add( LoaderInfo(e.currentTarget).loader );
 			loadNextImage();
 		}
@@ -120,18 +129,20 @@ package main.mvc.controller
 			{
 				clearGrid();
 			}
-			
 		}
 		
 		private function buildOtherImages():void
 		{
-			// centro direita
+			// centro direita 
+			var cd:Bitmap = takeSnapshot(imageList.length == 1 ? imageList[0] : imageList[1] ); 
+				cd.x = -(imgWidth  >> 1);
+				cd.y = -(imgHeight >> 1);
 			var cdContainer : Sprite = new Sprite();
 				cdContainer.x = imgWidth * spacingMult;
-				cdContainer.addChild( imageList[1] );
+				cdContainer.addChild( cd );
 
 			// centro esquerda
-			var ce:Bitmap = takeSnapshot(imageList[imageList.length-1]);
+			var ce:Bitmap = takeSnapshot(imageList[imageList.length-1]); 
 				ce.x = -(imgWidth  >> 1);
 				ce.y = -(imgHeight >> 1);
 			var ceContainer : Sprite = new Sprite();

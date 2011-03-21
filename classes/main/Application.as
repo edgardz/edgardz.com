@@ -18,9 +18,11 @@ package main
 	import main.mvc.controller.Foreground;
 	import main.mvc.controller.GridTile;
 	import main.mvc.controller.Job;
+	import main.mvc.controller.JobWindow;
+	import main.mvc.controller.Loading;
 	import main.mvc.controller.Menu;
 	import main.mvc.controller.Thumb;
-	import main.mvc.controller.JobWindow;
+	import main.mvc.controller.Window;
 	import main.mvc.model.SiteModel;
 	import main.mvc.view.View;
 	import main.shared.Global;
@@ -58,8 +60,10 @@ package main
 			GridTile.viewClass 			= getClassFromSwf("GridTile");
 			Job.viewClass 				= getClassFromSwf("Job");
 			JobWindow.viewClass 		= getClassFromSwf("JobWindow");
+			Loading.viewClass 			= getClassFromSwf("Loading");
 			Menu.viewClass 				= getClassFromSwf("Menu");
 			Thumb.viewClass 			= getClassFromSwf("Thumb");
+			Window.viewClass 			= getClassFromSwf("Window");
 			
 			addChild( Background.instance );
 			addChild( Foreground.instance ); 
@@ -72,8 +76,8 @@ package main
 			
 			Background.instance.initLoad();
 			
-			TweenLite.delayedCall( 1, Foreground.instance.hideSource );
-			TweenLite.delayedCall( 2, Content.instance.showGallery );
+			TweenLite.delayedCall( 0.5, Foreground.instance.hideSource );
+			TweenLite.delayedCall( 1.5, Content.instance.showGallery );
 			
 			redistribute();
 			Global.stage.addEventListener( Event.RESIZE, redistribute, false, 0, true );

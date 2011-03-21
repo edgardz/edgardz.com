@@ -1,5 +1,8 @@
 package main.mvc.controller
 {
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Expo;
+	
 	import flash.events.Event;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
@@ -38,8 +41,10 @@ package main.mvc.controller
 			"../classes/main/mvc/controller/ImageFlipper.as",
 			"../classes/main/mvc/controller/Job.as",
 			"../classes/main/mvc/controller/JobWindow.as",
+			"../classes/main/mvc/controller/Loading.as",
 			"../classes/main/mvc/controller/Menu.as",
 			"../classes/main/mvc/controller/Thumb.as",
+			"../classes/main/mvc/controller/Window.as",
 
 			"../classes/main/mvc/model/SiteModel.as",
 			
@@ -59,6 +64,8 @@ package main.mvc.controller
 
 			addMouseListeners( view.back, null, null, Foreground.instance.hideSource );
 			view.back.visible = false;
+			
+			view.y = Global.stage.stageHeight;
 		}
 		
 		public function initLoad():void
@@ -91,6 +98,8 @@ package main.mvc.controller
 		{
 			dict[e.currentTarget].text = e.currentTarget.data;
 			loadNextSource(); 
+			
+			TweenLite.to( view, 1, {y:0, ease:Expo.easeOut, delay:0.2} );
 		}
 		
 		public function redistribute():void

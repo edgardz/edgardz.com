@@ -17,6 +17,7 @@ package main.mvc.controller
 	
 	import org.edgardz.utils.addMouseListeners;
 	import org.edgardz.utils.removeChildrensFrom;
+	import org.edgardz.utils.takeSnapshot;
 	
 	public class Thumb extends Controller
 	{
@@ -34,13 +35,14 @@ package main.mvc.controller
 			
 			this.id = id;
 			
-			view.y 			= 50;
+			view.x 			= -125;
+			view.y 			= -75 + 50;
 			view.alpha 		= 0;
 			view.visible 	= false;
 			
 			branco = new Bitmap( new BitmapData(10,10) );
 			
-			TweenLite.to( view, 0.2, {y:0, autoAlpha:1, ease:Expo.easeOut, delay:0.1*id, onComplete:loadImg} );
+			TweenLite.to( view, 0.2, {y:-75, autoAlpha:1, ease:Expo.easeOut, delay:0.1*id, onComplete:loadImg} );
 
 			function loadImg():void
 			{
@@ -51,7 +53,7 @@ package main.mvc.controller
 			
 			view.title.autoSize = TextFieldAutoSize.RIGHT;
 			view.title.text = title;
-			
+
 			addMouseListeners(this, null, null, null);
 		}
 		
@@ -62,6 +64,8 @@ package main.mvc.controller
 			
 			view.container.addChild( loader );
 			view.container.addChild( branco );
+			
+			Bitmap(loader.content).smoothing = true;
 
 			view.title.x = view.frame.width - view.title.width;
 			
@@ -73,14 +77,14 @@ package main.mvc.controller
 		
 		public function hide():void
 		{
-			TweenLite.to( view, 0.2, {y:50, autoAlpha:0, ease:Expo.easeOut, delay:0.05*id} );
+			TweenLite.to( view, 0.2, {y:-75 + 50, autoAlpha:0, ease:Expo.easeOut, delay:0.05*id} );
 		}
 		
 		public function show():void
 		{
 			TweenLite.to( branco, 0.0, {autoAlpha:1} );
 			TweenLite.to( branco, 0.2, {autoAlpha:0, ease:Linear.easeNone, delay:(0.05*id)+0.2} );
-			TweenLite.to( view, 0.3, {y:0, autoAlpha:1, ease:Expo.easeOut, delay: 0.05*id} );
+			TweenLite.to( view, 0.3, {y:-75, autoAlpha:1, ease:Expo.easeOut, delay: 0.05*id} );
 		}
 
 	}
