@@ -30,14 +30,18 @@ package main.mvc.controller
 			"../classes/main/mvc/controller/Contact.as",
 			"../classes/main/mvc/controller/Content.as",
 			"../classes/main/mvc/controller/Controller.as",
+			"../classes/main/mvc/controller/CoverFlow2.as",
 			"../classes/main/mvc/controller/Footer.as",
 			"../classes/main/mvc/controller/Foreground.as",
+			"../classes/main/mvc/controller/Gallery.as",
 			"../classes/main/mvc/controller/GridTile.as",
+			"../classes/main/mvc/controller/ImageFlipper.as",
 			"../classes/main/mvc/controller/Job.as",
+			"../classes/main/mvc/controller/JobWindow.as",
 			"../classes/main/mvc/controller/Menu.as",
-			"../classes/main/mvc/controller/Window.as",
+			"../classes/main/mvc/controller/Thumb.as",
 
-			//"../classes/main/mvc/model/???",
+			"../classes/main/mvc/model/SiteModel.as",
 			
 			"../classes/main/mvc/view/View.as" 
 		];
@@ -52,10 +56,14 @@ package main.mvc.controller
 			init( viewClass );
 			
 			dict = new Dictionary();
-			
-			loadNextSource();
-			
+
 			addMouseListeners( view.back, null, null, Foreground.instance.hideSource );
+			view.back.visible = false;
+		}
+		
+		public function initLoad():void
+		{
+			loadNextSource();
 		}
 		
 		private function loadNextSource():void

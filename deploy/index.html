@@ -5,6 +5,8 @@
 		<script type="text/javascript" src="js/AC_OETags.js"></script>
 		<script type="text/javascript" src="js/swfobject.js"></script>
         <script type="text/javascript" src="js/swfaddress.js"></script>
+        <script type='text/javascript' src='js/jquery.min.js'></script> 
+		<script type='text/javascript' src='js/jquery.scrollTo-min.js'></script> 
 	</head>
 	<body>
 		<script language="javascript" type="text/javascript">
@@ -40,6 +42,21 @@
 				{
 					document.getElementById("conteudoFlash").style.height = value;
 				}
+				
+				var prevScroll = 0;
+				
+				function scrollTo(value)
+				{
+					prevScroll = document.body.scrollTop || window.pageYOffset || (document.body.parentElement ? document.body.parentElement.scrollTop : 0 );
+					$.scrollTo( value, 400 );
+				}
+				
+				function scrollToPrev()
+				{
+					$.scrollTo( prevScroll, 400 );
+				}
+
+				
 			//]]>
 		</script>
 

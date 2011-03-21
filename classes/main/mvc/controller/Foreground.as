@@ -1,6 +1,7 @@
 package main.mvc.controller
 {
 	import com.greensock.TweenLite;
+	import com.greensock.easing.Back;
 	import com.greensock.easing.Expo;
 	
 	import flash.display.Bitmap;
@@ -34,6 +35,8 @@ package main.mvc.controller
 			
 			addChild( actualContainer );
 			addChild( snapshotContainer );
+			
+			x = Global.stage.stageWidth + 50;
 		}
 		
 		public function showSource(e:MouseEvent=null):void
@@ -42,6 +45,7 @@ package main.mvc.controller
 			setSnapshotMode( true );
 			TweenLite.to( this, 1, {x:Global.stage.stageWidth + 50, ease:Expo.easeInOut} );
 			Application.instance.fixHeight( Background.instance );
+			Background.instance.view.back.visible = true;
 		}
 		
 		

@@ -7,9 +7,11 @@ package main.mvc.controller
 	import flash.display.BitmapData;
 	import flash.display.DisplayObject;
 	import flash.display.MovieClip;
+	import flash.display.PixelSnapping;
 	import flash.display.Sprite;
 	import flash.events.MouseEvent;
 	import flash.geom.Matrix;
+	import flash.geom.PerspectiveProjection;
 	import flash.geom.Point;
 	
 	import org.edgardz.utils.Layer;
@@ -19,139 +21,168 @@ package main.mvc.controller
 
 	public class ImageFlipper extends Controller
 	{
-		// 30 x 30 | 15 x 60
-		// 10 x 30 | 5 x 60
+		// 30 x 30 | 15 x 60 | 3 x 300 | 6 x 150 | 9 x 100
+		// 10 x 30 | 5 x 60  | 1 x 300 | 2 x 150 | 3 x 100
 		
-		private var numSlicesH : int = 30;
-		private var numSlicesV : int = 10;
-		private var sliceSize  : int = 30;
+		private var numSlicesH : int = 9;
+		private var numSlicesV : int = 3;
+		
+		private var sliceSize  : int = 100;
 		
 		private var allActive : Boolean;
 		
-		private var imageContainer 	  : MovieClip;
-		private var snapshotContainer : MovieClip;
+		public var imageContainer  : MovieClip;
+		public var slicedContainer : MovieClip;
 		
-		public function ImageFlipper()
+		private var relatedJob	:Job;
+		
+		public function ImageFlipper( relatedJob:Job )
 		{
 			super(); 
 			
+			this.relatedJob = relatedJob;
+
 			mouseEnabled = false;
 			mouseChildren = true;
 			
-			imageContainer 		= new MovieClip();
-			snapshotContainer 	= new MovieClip();
+			imageContainer 	= new MovieClip();
+			slicedContainer = new MovieClip();
 			
-			addChild( snapshotContainer );
+			var pp:PerspectiveProjection = new PerspectiveProjection();
+				pp.projectionCenter 	 = new Point(450,150);
+				pp.fieldOfView 			 = 100;
+			
+			slicedContainer.transform.perspectiveProjection = pp;
+			
 			addChild( imageContainer );
+			addChild( slicedContainer );
 		}
 		
 		public function add( img:DisplayObject ):void
 		{
-			var image : Sprite = new MovieClip();
-			
-			for ( var _x:int = 0; _x < numSlicesH; _x++ )
+			img.addEventListener( MouseEvent.MOUSE_MOVE, onMouse, false, 0, true );			
+			imageContainer.addChildAt( img, 0 );
+		}
+		
+		private function onMouse(e:MouseEvent):void
+		{
+			sliceImage( e.currentTarget as DisplayObject );
+			imageContainer.mouseEnabled = false;
+			imageContainer.mouseChildren = false;	
+		}
+		
+		private function sliceImage(img:DisplayObject):void
+		{
+			if( slicedContainer.numChildren == 0 )
 			{
-				for ( var _y:int = 0; _y < numSlicesV; _y++ )
+				var image : Sprite = null;
+					image = new MovieClip();
+				
+				for ( var _x:int = 0; _x < numSlicesH; _x++ )
 				{
-					
-					var slice : Bitmap = new Bitmap( new BitmapData(sliceSize,sliceSize,false) );
-						slice.bitmapData.draw( img, new Matrix(1,0,0,1, -_x * sliceSize, -_y * sliceSize) );
-						slice.x = -sliceSize/2;
-						slice.y = -sliceSize/2;
-
-					var sliceContainer : MovieClip = new MovieClip();
-						sliceContainer.x = sliceContainer.oldX = (_x * sliceSize) + (sliceSize/2);
-						sliceContainer.y = sliceContainer.oldY = (_y * sliceSize) + (sliceSize/2);
-						sliceContainer.newX = randomize(sliceContainer.x);
-						sliceContainer.newY = randomize(sliceContainer.y);
-						sliceContainer.rotationX = 0;
-						sliceContainer.rotationY = 0;
-						sliceContainer.rotationZ = 0;
-						sliceContainer.newRotX = randomize();
-						sliceContainer.newRotY = randomize();
-						sliceContainer.newRotZ = randomize();
-						sliceContainer.addEventListener( MouseEvent.MOUSE_MOVE, moveSlice, false, 0, true );
-						sliceContainer.addChild( slice );
-						
-					image.addChild( sliceContainer );
+					for ( var _y:int = 0; _y < numSlicesV; _y++ )
+					{
+						var slice : Bitmap = null;
+							slice = new Bitmap( new BitmapData(sliceSize,sliceSize,false),PixelSnapping.NEVER );
+							slice.bitmapData.draw( img, new Matrix(1,0,0,1, -_x * sliceSize, -_y * sliceSize) );
+							slice.x = -sliceSize/2;
+							slice.y = -sliceSize/2;
+	
+						var sliceClip : MovieClip = null;
+							sliceClip = new MovieClip();
+							sliceClip.x = sliceClip.oldX = (_x * sliceSize) + (sliceSize/2);
+							sliceClip.y = sliceClip.oldY = (_y * sliceSize) + (sliceSize/2);
+							sliceClip.rotationX = 0;
+							sliceClip.rotationY = 0;
+							sliceClip.rotationZ = 0;
+							
+							sliceClip.newX = randomize(sliceClip.x);
+							sliceClip.newY = randomize(sliceClip.y);
+							sliceClip.newRotX = randomize();
+							sliceClip.newRotY = randomize();
+							sliceClip.newRotZ = randomize();
+							
+							sliceClip.addEventListener( MouseEvent.MOUSE_OVER, moveSlice, false, 0, true );
+							sliceClip.addChild( slice );
+							
+						image.addChild( sliceClip );
+					}
 				}
+				
+				slicedContainer.addChild( image ); 
+				Layer.toBottom( img );
 			}
-
-			imageContainer.addChildAt( image, 0 ); 
 			
-			//checkImageIndexes();
 		}
 		
 		private function moveSlice(e:MouseEvent):void
 		{
 			var image : MovieClip = e.currentTarget.parent;
-			
-			if( imageContainer.getChildIndex(image) == imageContainer.numChildren-1 )
+
+			for( var i:int = 0; i < image.numChildren; i++ )
 			{
-				for( var i:int = 0; i < image.numChildren; i++ )
+				var slice:MovieClip = image.getChildAt(i) as MovieClip;
+				
+				if( slice.alpha == 1 )
 				{
-					var slice:MovieClip = image.getChildAt(i) as MovieClip;
-					
-					if( slice.alpha == 1 )
+					if( slice == e.currentTarget )
 					{
-						if( slice == e.currentTarget )
-						{
-							TweenLite.to( slice, 0.8, {	rotationX:slice.newRotX,
-														rotationY:slice.newRotY,
-														//rotationZ:slice.newRotZ,
-														z:-90, 
-														x:slice.newX, 
-														y:slice.newY, 
-														autoAlpha:0, 
-														ease:Expo.easeOut, 
-														onComplete:unmoveSlice, 
-														onCompleteParams:[slice]} );
-						}
-						else if( distance(slice, e.currentTarget) < 40 )
-						{
-							TweenLite.to( slice, 0.8, {	rotationX:slice.newRotX,
-														rotationY:slice.newRotY,
-														//rotationZ:slice.newRotZ,
-														z:-90, 
-														x:slice.newX, 
-														y:slice.newY, 
-														autoAlpha:0, 
-														ease:Expo.easeOut, 
-														onComplete:unmoveSlice, 
-														onCompleteParams:[slice],
-														delay:0.1} );
-						}
-						else if( distance(slice, e.currentTarget) < 80 )
-						{
-							TweenLite.to( slice, 0.8, {	rotationX:slice.newRotX,
-														rotationY:slice.newRotY,
-														//rotationZ:slice.newRotZ,
-														z:-90, 
-														x:slice.newX, 
-														y:slice.newY, 
-														autoAlpha:0, 
-														ease:Expo.easeOut, 
-														onComplete:unmoveSlice, 
-														onCompleteParams:[slice],
-														delay:0.2} );
-						}
-						else if( distance(slice, e.currentTarget) < 160 )
-						{
-							TweenLite.to( slice, 0.8, {	rotationX:slice.newRotX,
-														rotationY:slice.newRotY,
-														//rotationZ:slice.newRotZ,
-														z:-90, 
-														x:slice.newX, 
-														y:slice.newY, 
-														autoAlpha:0, 
-														ease:Expo.easeOut, 
-														onComplete:unmoveSlice, 
-														onCompleteParams:[slice],
-														delay:0.3} );
-						}
+						TweenLite.to( slice, 0.5, {	rotationX:slice.newRotX,
+													rotationY:slice.newRotY,
+													//rotationZ:slice.newRotZ,
+													z:-90, 
+													x:slice.newX, 
+													y:slice.newY, 
+													autoAlpha:0, 
+													ease:Expo.easeOut, 
+													onComplete:unmoveSlice, 
+													onCompleteParams:[slice]} );
+					}
+					else if( distance(slice, e.currentTarget) < 40 )
+					{
+						TweenLite.to( slice, 0.5, {	rotationX:slice.newRotX,
+													rotationY:slice.newRotY,
+													//rotationZ:slice.newRotZ,
+													z:-90, 
+													x:slice.newX, 
+													y:slice.newY, 
+													autoAlpha:0, 
+													ease:Expo.easeOut, 
+													onComplete:unmoveSlice, 
+													onCompleteParams:[slice],
+													delay:0.1} );
+					}
+					else if( distance(slice, e.currentTarget) < 80 )
+					{
+						TweenLite.to( slice, 0.5, {	rotationX:slice.newRotX,
+													rotationY:slice.newRotY,
+													//rotationZ:slice.newRotZ,
+													z:-90, 
+													x:slice.newX, 
+													y:slice.newY, 
+													autoAlpha:0, 
+													ease:Expo.easeOut, 
+													onComplete:unmoveSlice, 
+													onCompleteParams:[slice],
+													delay:0.2} );
+					}
+					else if( distance(slice, e.currentTarget) < 160 )
+					{
+						TweenLite.to( slice, 0.5, {	rotationX:slice.newRotX,
+													rotationY:slice.newRotY,
+													//rotationZ:slice.newRotZ,
+													z:-90, 
+													x:slice.newX, 
+													y:slice.newY, 
+													autoAlpha:0, 
+													ease:Expo.easeOut, 
+													onComplete:unmoveSlice, 
+													onCompleteParams:[slice],
+													delay:0.3} );
 					}
 				}
 			}
+
 		}
 		
 		private function unmoveSlice(slice:MovieClip):void
@@ -168,17 +199,22 @@ package main.mvc.controller
 											y:slice.oldY, 
 											autoAlpha:1, 
 											ease:Expo.easeOut,
-											delay:5} );
+											delay:3} );
 			}
 			else
 			{
+				var image : MovieClip = slice.parent as MovieClip;
+				for( var i:int = 0; i < image.numChildren; i++ )
+				{
+					TweenLite.killTweensOf(image.getChildAt(i));
+				}
+				removeChildrensFrom( slicedContainer );
+				sliceImage( imageContainer.getChildAt(imageContainer.numChildren-1) );
 				allActive = false;
-				Layer.toBottom( slice.parent );
-				resetImage( slice.parent as MovieClip );
 			}
 			
 		}
-		
+
 		private function checkBrothersComplete( slice:MovieClip ):Boolean
 		{
 			var result : Boolean = true;
@@ -192,53 +228,11 @@ package main.mvc.controller
 			
 			return result;
 		}
-		
-		private function resetImage( image:MovieClip ):void
-		{
-			for( var i:int = 0; i < image.numChildren; i++ )
-			{
-				var slice : MovieClip = image.getChildAt(i) as MovieClip;
-				TweenLite.killTweensOf(slice);
-				slice.x = slice.oldX;
-				slice.y = slice.oldY;
-				slice.z = 0;
-				slice.rotationX = 0;
-				slice.rotationY = 0;
-				slice.rotationZ = 0;
-				slice.alpha = 1;
-				slice.visible = true;
-			}
-			
-			//checkImageIndexes();
-		}
-		
+
 		private function randomize( value:int=0 ):Number
 		{
-			return value + ((Math.random()*60)-30);
+			return value + ((Math.random()*120)-60);
 		}
-		/*
-		private function checkImageIndexes():void
-		{
-			for( var i:int = 0; i < imageContainer.numChildren; i++ )
-			{
-				var image : MovieClip = imageContainer.getChildAt(i) as MovieClip;
-				
-				if( i < imageContainer.numChildren-1 )
-				{
-					image.visible = false;
-					
-					if( i == imageContainer.numChildren-2 )
-					{
-						removeChildrensFrom( snapshotContainer );
-						snapshotContainer.addChild( takeSnapshot(imageContainer.getChildAt(i)) );
-					}
-				}
-				else
-				{
-					image.visible = true;
-				}
-			}
-		}
-		*/
+		
 	}
 }

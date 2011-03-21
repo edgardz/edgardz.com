@@ -1,73 +1,92 @@
 package main.mvc.controller
 {
-	import flash.display.Loader;
-	import flash.display.LoaderInfo;
-	import flash.events.Event;
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Expo;
+	
+	import flash.events.MouseEvent;
 	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
+	import flash.text.TextFieldAutoSize;
 	
 	import main.Application;
 	
-	import org.edgardz.utils.rand;
+	import org.edgardz.utils.addMouseListeners;
 
 	public class Job extends Controller
 	{
+		private static var _instance		 :	Job;
+		public static function get instance():	Job 
+		{ if(_instance == null) _instance = new Job(); return _instance; }
 		public static var viewClass	: Class;
 		
-		private var window		:Window;
-		private var imagesURL	:Array;
-		private var imageFlipper:ImageFlipper;
-		
-		public function Job(title:String, client:String, plataform:String, agency:String, roles:String, images:Array)
+		private var window		:JobWindow;
+		private var jobData		:Object;
+		private var coverFlow	:CoverFlow2;
+
+		public function Job()
 		{
 			super();
 			init( viewClass );
 			
-			imageFlipper = new ImageFlipper();
-			view.container.addChild( imageFlipper );
-
-			imagesURL = images;
-			loadNextImage();
+			coverFlow = new CoverFlow2( 900, 300 );
+			coverFlow.x = 450;
+			coverFlow.y = 150;
 			
-			view.client.htmlText 	= "<i>" + client + "</i>";  
-			view.plataform.htmlText = "<i>" + plataform + "</i>";  
-			view.agency.htmlText 	= "<i>" + agency + "</i>";  
-			view.roles.htmlText 	= "<i>" + roles + "</i>";  
+			view.container.addChild( coverFlow ); 
+			view.roles.autoSize = TextFieldAutoSize.CENTER;
+			addMouseListeners( view.link, onLink, onLink, onLink );
 			
-			window 			= new Window(title);
-			window.content 	= view;
+			
+			window 			= new JobWindow();
+			window.x 		= 100;
 			window.alpha 	= 0;
 			window.visible 	= false;
+			window.content 	= view;
 			
 			addChild( window );
-			
-			addEventListener(Event.ADDED, onAddedAsChild, false, 0, true);
 		}
 		
-		private function onAddedAsChild(e:Event):void
+		public function show( jobData:Object ):void 
 		{
-			window.alpha 	= 1;
-			window.visible 	= true;
+			this.jobData = jobData;
 			
-			Application.instance.redistribute();
+			window.x 		= 100;
+			TweenLite.to( window, 0.3, {x:0, autoAlpha:1, ease:Expo.easeOut, delay:0.3, onComplete:Application.instance.redistribute} );
 			
+			window.showBackButton();
+			
+			coverFlow.load( jobData.images );
+			
+			view.client.htmlText 	= jobData.client; 
+			view.plataform.htmlText = jobData.plataform;  
+			view.agency.htmlText 	= jobData.agency;  
+			view.company.htmlText 	= jobData.company;  
+			view.roles.htmlText 	= jobData.roles;  
+			
+			window.title = jobData.title;
 		}
 		
-		private function loadNextImage():void
+		private function onLink(e:MouseEvent):void
 		{
-			if( imagesURL.length > 0 )
+			switch(e.type)
 			{
-				var loader:Loader = new Loader();
-					loader.contentLoaderInfo.addEventListener( Event.COMPLETE, onImageLoaded, false, 0, true );
-					loader.load( new URLRequest("img/" + imagesURL[0]) );
-					
-				imagesURL.shift();    
+				case MouseEvent.ROLL_OVER:
+					TweenLite.to( view.link, 0.2, {alpha:1} );
+					break;
+				
+				case MouseEvent.ROLL_OUT:
+					TweenLite.to( view.link, 0.2, {alpha:0.7} );
+					break;
+				
+				case MouseEvent.CLICK:
+					navigateToURL( new URLRequest(jobData.link), "_blank" );
+					break; 
 			}
 		}
 		
-		private function onImageLoaded(e:Event):void
+		public function hide():void
 		{
-			imageFlipper.add( LoaderInfo(e.currentTarget).loader );
-			loadNextImage();
+			TweenLite.to( window, 0.3, {x:-100, autoAlpha:0, ease:Expo.easeOut} );
 		}
 	}
 }

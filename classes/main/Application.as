@@ -1,6 +1,7 @@
 package main
 {
 	import com.brokenfunction.json.decodeJson;
+	import com.greensock.TweenLite;
 	
 	import flash.display.DisplayObject;
 	import flash.events.Event;
@@ -18,7 +19,9 @@ package main
 	import main.mvc.controller.GridTile;
 	import main.mvc.controller.Job;
 	import main.mvc.controller.Menu;
-	import main.mvc.controller.Window;
+	import main.mvc.controller.Thumb;
+	import main.mvc.controller.JobWindow;
+	import main.mvc.model.SiteModel;
 	import main.mvc.view.View;
 	import main.shared.Global;
 	
@@ -36,14 +39,12 @@ package main
 		{ 
 			_instance = this;
 
-			dataLoader = new URLLoader();
-			dataLoader.addEventListener(Event.COMPLETE, onDataLoaded, false, 0, true);
-			dataLoader.load( new URLRequest("json/sitedata.json?" + rand()) );
+			SiteModel.loadSiteData( onDataLoaded );
 		}
 		
-		private function onDataLoaded(e:Event):void
+		private function onDataLoaded( json:String ):void
 		{
-			Global.siteData = decodeJson( e.target.data );
+			Global.siteData = decodeJson( json );
 			embed( View.swf, onEmbed, false );
 		}
 		
@@ -56,8 +57,9 @@ package main
 			Footer.viewClass 			= getClassFromSwf("Footer");
 			GridTile.viewClass 			= getClassFromSwf("GridTile");
 			Job.viewClass 				= getClassFromSwf("Job");
+			JobWindow.viewClass 		= getClassFromSwf("JobWindow");
 			Menu.viewClass 				= getClassFromSwf("Menu");
-			Window.viewClass 			= getClassFromSwf("Window");
+			Thumb.viewClass 			= getClassFromSwf("Thumb");
 			
 			addChild( Background.instance );
 			addChild( Foreground.instance ); 
@@ -68,7 +70,10 @@ package main
 			
 			Content.instance.y = 130;
 			
-			Content.instance.showJobs();
+			Background.instance.initLoad();
+			
+			TweenLite.delayedCall( 1, Foreground.instance.hideSource );
+			TweenLite.delayedCall( 2, Content.instance.showGallery );
 			
 			redistribute();
 			Global.stage.addEventListener( Event.RESIZE, redistribute, false, 0, true );
@@ -78,7 +83,7 @@ package main
 		{
 			if( !Foreground.instance.codeVisible )
 			{
-				Footer.instance.y  = Math.max(1000, Content.instance.y + Content.instance.height - 120);
+				Footer.instance.y  = Math.max(900, Content.instance.y + Content.instance.height - 120);
 				
 				Content.instance.redistribute();
 				Footer.instance.redistribute();

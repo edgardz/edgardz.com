@@ -37,9 +37,7 @@ package main.mvc.controller
 			TweenLite.to( view.buttons.about, 	30, {y:-4, alpha:1, ease:Expo.easeOut, useFrames:true, delay:235} ); 
 			TweenLite.to( view.buttons.contact, 30, {y:-4, alpha:1, ease:Expo.easeOut, useFrames:true, delay:240} ); 
 
-			TweenLite.delayedCall( 300, setGlow, [view.buttons.gallery, true], true );
-			
-			addMouseListeners( view.buttons.gallery, 	null, 		  null, 	   onButtonClick );
+			addMouseListeners( view.buttons.gallery, 	onButtonOver, onButtonOut, onButtonClick );
 			addMouseListeners( view.buttons.about, 		onButtonOver, onButtonOut, onButtonClick );
 			addMouseListeners( view.buttons.contact, 	onButtonOver, onButtonOut, onButtonClick );
 			
@@ -62,7 +60,7 @@ package main.mvc.controller
 			switch(e.currentTarget)
 			{
 				case view.buttons.gallery:
-					Content.instance.showJobs();
+					Content.instance.showGallery();
 					break;
 				
 				case view.buttons.about:
@@ -94,11 +92,14 @@ package main.mvc.controller
 		
 		public function updateButtons( activeContent:Array ):void
 		{
+			view.buttons.gallery.active = activeContent[0] == 1 ? true : false;
 			view.buttons.about.active   = activeContent[1] == 1 ? true : false;
 			view.buttons.contact.active = activeContent[2] == 1 ? true : false;
 
+			setGlow( view.buttons.gallery, 	true );
 			setGlow( view.buttons.about, 	true );
 			setGlow( view.buttons.contact, 	true );
+			setGlow( view.buttons.gallery, 	false );
 			setGlow( view.buttons.about, 	false );
 			setGlow( view.buttons.contact, 	false );
 		}
