@@ -1,8 +1,12 @@
 package main.mvc.controller
 {
+	import flash.events.MouseEvent;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	
+	import org.edgardz.utils.addMouseListeners;
 	import org.edgardz.utils.removeChildrensFrom;
 	import org.edgardz.utils.takeSnapshot;
 
@@ -21,12 +25,19 @@ package main.mvc.controller
 			source.autoSize = TextFieldAutoSize.CENTER;
 			
 			view.removeChild( source );
+			
+			addMouseListeners( view, null, null, gotogit, false );
 		}
 		
-		public function set text(value:String):void
+		private function gotogit(e:MouseEvent):void
 		{
-			source.text = value.split(String.fromCharCode(13)).join('');
-			source.appendText( "\n\n\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n\n\n" );
+			navigateToURL( new URLRequest("https://github.com/edgardz/edgardz.com"), "_blank" );
+		}
+		
+		public function set text(value:String):void 
+		{
+			source.text = value.split(String.fromCharCode(13)).join('');  
+			source.appendText( "\n\n\n/* - - - - - > Full source code can be found in https://github.com/edgardz/edgardz.com < - - - - - */\n\n\n" );
 			
 			removeChildrensFrom( view );
 			view.addChild( takeSnapshot(source, null, false, false, false) );

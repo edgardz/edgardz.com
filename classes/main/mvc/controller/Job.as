@@ -32,11 +32,15 @@ package main.mvc.controller
 			coverFlow.x = 450;
 			coverFlow.y = 150;
 			
+			view.arrows.mouseEnabled = false;
+			view.arrows.visible 	 = false;
+			view.arrows.alpha 		 = 0;
+			
 			view.container.addChild( coverFlow ); 
 			view.roles.autoSize = TextFieldAutoSize.CENTER;
+			
 			addMouseListeners( view.link, onLink, onLink, onLink );
-			
-			
+
 			window 			= new JobWindow();
 			window.x 		= 100;
 			window.alpha 	= 0;
@@ -63,6 +67,9 @@ package main.mvc.controller
 			view.company.htmlText 	= jobData.company;  
 			view.roles.htmlText 	= jobData.roles;  
 			
+			TweenLite.to( view.arrows, 0, {autoAlpha:1, delay:1.0} );
+			TweenLite.to( view.arrows, 2, {autoAlpha:0, delay:1.2} ); 
+			
 			window.title = jobData.title;
 		}
 		
@@ -83,7 +90,7 @@ package main.mvc.controller
 					break; 
 			}
 		}
-		
+
 		public function hide():void
 		{
 			TweenLite.to( window, 0.3, {x:-100, autoAlpha:0, ease:Expo.easeOut} );

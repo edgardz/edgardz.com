@@ -1,3 +1,14 @@
+
+/*
+* 
+*
+*			Full source code can be found in https://github.com/edgardz/edgardz.com
+*
+*
+*/
+
+
+
 package main
 {
 	import com.brokenfunction.json.decodeJson;
@@ -14,6 +25,7 @@ package main
 	import main.mvc.controller.BackgroundSource;
 	import main.mvc.controller.Contact;
 	import main.mvc.controller.Content;
+	import main.mvc.controller.CoverFlowImage;
 	import main.mvc.controller.Footer;
 	import main.mvc.controller.Foreground;
 	import main.mvc.controller.GridTile;
@@ -55,6 +67,7 @@ package main
 			About.viewClass 			= getClassFromSwf("About");
 			Background.viewClass 		= getClassFromSwf("Background");
 			BackgroundSource.viewClass 	= getClassFromSwf("BackgroundSource");
+			CoverFlowImage.viewClass 	= getClassFromSwf("CoverFlowImage");
 			Contact.viewClass 			= getClassFromSwf("Contact");
 			Footer.viewClass 			= getClassFromSwf("Footer");
 			GridTile.viewClass 			= getClassFromSwf("GridTile");

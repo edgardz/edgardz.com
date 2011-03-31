@@ -19,7 +19,6 @@ package main.mvc.controller
 	
 	import org.edgardz.utils.Layer;
 	import org.edgardz.utils.addMouseListeners;
-	import org.edgardz.utils.distance;
 	import org.edgardz.utils.removeChildrensFrom;
 	import org.edgardz.utils.takeSnapshot;
 	
@@ -37,11 +36,7 @@ package main.mvc.controller
 		private var newSnap			:Point;
 		
 		private var spacingMult	:Number = 0.8;
-		
-		private var imagesURL	:Array;
-		
-		private var loading	:Loading;
-		
+
 		public function CoverFlow2( imgWidth:int, imgHeight:int )
 		{
 			super();
@@ -62,9 +57,6 @@ package main.mvc.controller
 			
 			addMouseListeners( container, onMouseOver, onMouseOut, null, false, true );
 			
-			loading = new Loading();
-			
-			addChild( loading );
 			addChild( container );
 			
 			mascara = new Bitmap( new BitmapData(imgWidth, imgHeight) );
@@ -93,31 +85,26 @@ package main.mvc.controller
 			imageList = [];
 			removeChildrensFrom( container );
 			
-			loading.visible = true;
-			
-			imagesURL = [];
-			imagesURL = urls;
-			loadNextImage();
-		}
-		
-		private function loadNextImage():void
-		{
-			if( imageList.length < imagesURL.length )
+			for( var i:int = 0; i<urls.length; i++ )
 			{
 				var loader:Loader = new Loader();
-					loader.contentLoaderInfo.addEventListener( Event.COMPLETE, onImageLoaded, false, 0, true );
-					loader.load( new URLRequest("img/" + imagesURL[imageList.length]) );
+					loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onImgLoaded, false, 0, true);
+					loader.load( new URLRequest("img/" + urls[i]) );
+				
+				var img : CoverFlowImage = new CoverFlowImage();
+					img.view.container.addChild( loader );
+					
+				add( img );
 			}
+
 		}
 		
-		private function onImageLoaded(e:Event):void
+		private function onImgLoaded(e:Event):void
 		{
-			loading.visible = false;
-			
-			add( LoaderInfo(e.currentTarget).loader );
-			loadNextImage();
+			LoaderInfo(e.currentTarget).loader.alpha = 0;
+			TweenLite.to( LoaderInfo(e.currentTarget).loader, 0.4, {alpha:1} );
 		}
-		
+
 		public function add( img:DisplayObject ):void
 		{
 			img.x = -(imgWidth  >> 1);
@@ -284,7 +271,7 @@ package main.mvc.controller
 				var firstImg:DisplayObject = imageList.shift() as DisplayObject;
 					imageList.push(firstImg);
 			}
-			else
+			else if( newSnap.x > lastSnap.x )
 			{
 				var lastImg:DisplayObject = imageList.pop() as DisplayObject;
 				imageList.unshift(lastImg);
