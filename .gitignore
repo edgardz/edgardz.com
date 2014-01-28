@@ -1,3 +1,5 @@
 *.DS_Store
+edgardz.sublime-project
+edgardz.sublime-workspace
 node_modules
 app/views/static/js/bower_components
