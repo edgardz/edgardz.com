@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Edgard Zavarezzi > Lab > ChromaCam</title>
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+  <body>
+
+    <div id="container">
+        <video id="preview" controls style="border: 1px solid rgb(15, 158, 238); height: 240px; width: 320px;"></video>
+    </div>
+
+    <div id="key">
+        <canvas id="videokey" width="320" height="240" >
+            <p>Sorry your browser does not support HTML5</p>
+        </canvas>
+    </div>
+
+    <div id="output">
+        <canvas id="videoscreen" width="320" height="240" >
+            <p>Sorry your browser does not support HTML5</p>
+        </canvas>
+    </div>
+
+    <br/>
+    <button id="record">Start</button>
+    <button id="stop" disabled>Stop</button>
+
+    <script type="text/javascript" src="js/lib/jquery-2.0.3.js"></script>
+    <script type="text/javascript" src="js/lib/RecordRTC.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+  </body>
+</html>

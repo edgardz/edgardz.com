@@ -1,0 +1,78 @@
+extends layout
+block title
+    title Edgard Zavarezzi - Full Stack Developer
+block prepend main
+    div.container
+        div
+            div.stripe
+            div.row
+                div.medium-10.medium-centered.large-10.large-centered.columns
+                    h1
+                        span.logo EZ
+                        small Edgard Zavarezzi
+                    h2
+                        a(href='http://www.laurencegellert.com/2012/08/what-is-a-full-stack-developer/', target='_blank') Desenvolvedor Full Stack
+                        p Websites, apps, games, whatever...
+                    ul.small-block-grid-1.medium-block-grid-2.large-block-grid-3.jobs
+                        each job, i in jobs
+                            li(class = job.id)
+                                a(href='#', data-reveal-id = job.id)
+                                    img(src='img/jobs/'+job.thumb, class='th')
+                                    h3 #{job.title}
+                    each job, i in jobs
+                        div(id = job.id, class='reveal-modal', data-reveal)
+                            h4 #{job.title}
+                            ul(data-orbit)
+                                each image, i in job.images
+                                    li
+                                        img(src='img/jobs/'+image, alt='image')
+                            ul.small-block-grid-1.medium-block-grid-4.large-block-grid-4.specs
+                                li !{'<strong>Cliente:</strong><br/> ' + job.client}
+                                li !{'<strong>Estudio:</strong><br/> ' + job.company}
+                                li !{'<strong>Agência:</strong><br/> ' + job.agency}
+                                li !{'<strong>Tecnologia:</strong><br/> ' + job.platform}
+                            p.description=job.description
+                            p
+                                a(href=job.link, target='_blank')
+                                    strong + Veja Mais
+
+                            a.close-reveal-modal &#215;
+        div#about
+            div.row
+                div.medium-3.large-3.columns.img-holder
+                    img(src='img/me.jpg', alt='Edgard Zavarezzi')
+                div.medium-9.large-9.columns
+                    p=about
+                    ul.small-block-grid-2.medium-block-grid-3.large-block-grid-4
+                        each skill, i in skills
+                            li
+                                span=skill.name
+        div#contact
+            div.row
+                div.medium-9.medium-centered.large-6.large-centered.columns
+                    h4 Entre em contato
+                    p
+                        a(href='mailto:ed@quatrozeroquatro.com.br') ed@quatrozeroquatro.com.br
+                    p +55 11  98558 0660
+            div.row
+                div.large-12.columns
+                    a(href='http://br.linkedin.com/in/edgardz', target='_blank')
+                        span.icon-linkedin
+                    a(href='http://www.twitter.com/edgardz', target='_blank')
+                        span.icon-twitter
+                    a(href='http://www.facebook.com/edgardzavarezzi', target='_blank')
+                        span.icon-facebook
+                    a(href='https://github.com/edgardz', target='_blank')
+                        span.icon-github
+        div#footer
+            div.stripe
+            div.row
+                div.large-12.columns
+                    blockquote "Stay Hungry, Stay Foolish"
+                        cite Steve Jobs.
+
+
+
+
+
+
