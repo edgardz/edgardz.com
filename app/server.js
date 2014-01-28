@@ -3,7 +3,7 @@
 var
 express = require('express'),
 app     = express(),
-port    = 9000,
+port    = 8080,
 env     = app.get('env');
 
 app.set('views', __dirname + (env === 'production' ? '/views/production' : '/views/development') );
