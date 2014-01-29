@@ -9,7 +9,7 @@ $(document)
         stack_on_small: false,
         navigation_arrows: true,
         slide_number: false,
-        bullets: false,
+        bullets: true,
         circular: true,
         timer: false,
         variable_height: false,
