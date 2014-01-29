@@ -19,30 +19,12 @@ block prepend main
                                 a(href='#', data-reveal-id = job.id)
                                     img(src='img/jobs/'+job.thumb, class='th')
                                     h3 #{job.title}
-                    each job, i in jobs
-                        div(id = job.id, class='reveal-modal', data-reveal)
-                            h4 #{job.title}
-                            ul(data-orbit)
-                                each image, i in job.images
-                                    li
-                                        img(src='img/jobs/'+image, alt='image')
-                            ul.small-block-grid-1.medium-block-grid-4.large-block-grid-4.specs
-                                li !{'<strong>Cliente:</strong><br/> ' + job.client}
-                                li !{'<strong>Estudio:</strong><br/> ' + job.company}
-                                li !{'<strong>Agência:</strong><br/> ' + job.agency}
-                                li !{'<strong>Tecnologia:</strong><br/> ' + job.platform}
-                            p.description=job.description
-                            p
-                                a(href=job.link, target='_blank')
-                                    strong + Veja Mais
-
-                            a.close-reveal-modal &#215;
         div#about
             div.row
                 div.medium-3.large-3.columns.img-holder
                     img(src='img/me.jpg', alt='Edgard Zavarezzi')
                 div.medium-9.large-9.columns
-                    p=about
+                    p.description=about
                     ul.small-block-grid-2.medium-block-grid-3.large-block-grid-4
                         each skill, i in skills
                             li
@@ -70,6 +52,24 @@ block prepend main
                 div.large-12.columns
                     blockquote "Stay Hungry, Stay Foolish"
                         cite Steve Jobs.
+        each job, i in jobs
+            div(id = job.id, class='reveal-modal', data-reveal)
+                h4 #{job.title}
+                ul(data-orbit)
+                    each image, i in job.images
+                        li
+                            img(src='img/jobs/'+image, alt='image')
+                ul.small-block-grid-1.medium-block-grid-4.large-block-grid-4.specs
+                    li !{'<strong>Cliente:</strong><br/> ' + job.client}
+                    li !{'<strong>Estudio:</strong><br/> ' + job.company}
+                    li !{'<strong>Agência:</strong><br/> ' + job.agency}
+                    li !{'<strong>Tecnologia:</strong><br/> ' + job.platform}
+                p.description=job.description
+                p
+                    a(href=job.link, target='_blank')
+                        strong + Veja Mais
+
+                a.close-reveal-modal &#215;
 
 
 
