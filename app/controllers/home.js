@@ -6,6 +6,7 @@ var skills_model = require('../model/skills');
 
 exports.use = function (app) {
     app.get('/', function(req, res, next) {
+        console.log(req.headers);
         jobs_model.getJobs(function(err, jobs){
             about_model.getAbout(function(err, about){
                 skills_model.getSkills(function(err, skills){
