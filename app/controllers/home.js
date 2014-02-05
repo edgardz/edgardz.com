@@ -6,9 +6,10 @@ var skills_model = require('../model/skills');
 
 exports.use = function (app) {
     app.get('/', function(req, res, next) {
-        req.i18n.setLng(req.headers['cf-ipcountry'] === 'BR' ? 'pt' : 'en');
-        jobs_model.getJobs(function(err, jobs){
-            about_model.getAbout(function(err, about){
+        var locale = req.headers['cf-ipcountry'] === 'BR' ? 'pt' : 'en';
+        req.i18n.setLng(locale);
+        jobs_model.getJobs(locale, function(err, jobs){
+            about_model.getAbout(locale, function(err, about){
                 skills_model.getSkills(function(err, skills){
                     res.render('home', {jobs: jobs, about:about, skills:skills});
                 });

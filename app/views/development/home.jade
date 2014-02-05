@@ -12,7 +12,7 @@ block prepend main
                         small Edgard Zavarezzi
                     h2
                         a(href='http://www.laurencegellert.com/2012/08/what-is-a-full-stack-developer/', target='_blank')= t('role')
-                        p Websites, apps, games, whatever...
+                        p= t('tagline')
                     ul.small-block-grid-1.medium-block-grid-2.large-block-grid-3.jobs
                         each job, i in jobs
                             li(class = job.id)
@@ -32,7 +32,7 @@ block prepend main
         div#contact
             div.row
                 div.medium-9.medium-centered.large-6.large-centered.columns
-                    h4 Entre em contato
+                    h4= t('getintouch')
                     p
                         a(href='mailto:ed@edgardz.com') ed@edgardz.com
                     p +55 11  98558 0660
@@ -60,14 +60,14 @@ block prepend main
                         li
                             img(src='img/jobs/'+image, alt='image')
                 ul.small-block-grid-1.medium-block-grid-4.large-block-grid-4.specs
-                    li !{'<strong>Cliente:</strong><br/> ' + job.client}
-                    li !{'<strong>Estudio:</strong><br/> ' + job.company}
-                    li !{'<strong>Agência:</strong><br/> ' + job.agency}
-                    li !{'<strong>Tecnologia:</strong><br/> ' + job.platform}
+                    li !{'<strong>' + t('client') + '</strong><br/> ' + job.client}
+                    li !{'<strong>' + t('studio') + '</strong><br/> ' + job.company}
+                    li !{'<strong>' + t('agency') + '</strong><br/> ' + job.agency}
+                    li !{'<strong>' + t('technology') + '</strong><br/> ' + job.platform}
                 p.description=job.description
                 p
                     a(href=job.link, target='_blank')
-                        strong + Veja Mais
+                        strong= t('seemore')
 
                 a.close-reveal-modal &#215;
 

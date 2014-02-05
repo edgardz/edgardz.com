@@ -1,3 +1,10 @@
 {
-    "role": "Desenvolvedor Full Stack"
+    "role": "Desenvolvedor Full Stack",
+    "tagline": "Websites, apps, games, whatever...",
+    "getintouch": "Entre em contato",
+    "client": "Cliente:",
+    "studio": "Estúdio:",
+    "agency": "Agência:",
+    "technology": "Tecnologia:",
+    "seemore": "+ Veja Mais"
 }
