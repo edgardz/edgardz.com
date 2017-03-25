@@ -1,0 +1,37 @@
+
+// USAGE:
+// @import '... /utils/responsive.css';
+// @media #{$phone-up} { ... }
+// @media #{$phone-only} { ... }
+// @media #{$tablet-up} { ... }
+// @media #{$tablet-only} { ... }
+// @media #{$desktop-up} { ... }
+// @media #{$desktop-only} { ... }
+// @media #{$desktop-large-up} { ... }
+// @media #{$desktop-large-only} { ... }
+// @media #{$desktop-xlarge-up} { ... }
+// @media #{$desktop-xlarge-only} { ... }
+// @media #{$desktop-xxlarge-up} { ... }
+
+
+$phone-breakpoint:          767px;
+$tablet-breakpoint:         1024px;
+$desktop-breakpoint:        1220px;
+$desktop-large-breakpoint:  1440px;
+$desktop-xlarge-breakpoint: 1920px;
+
+$phone-up:             "only screen";
+$phone-only:           "only screen and (max-width: #{$phone-breakpoint}), only screen and (max-height: 500px)";
+$tablet-up:            "only screen and (min-width: #{$phone-breakpoint + 1px})";
+$tablet-only:          "only screen and (min-width: #{$phone-breakpoint + 1px}) and (max-width: #{$tablet-breakpoint})";
+$desktop-up:           "only screen and (min-width: #{$tablet-breakpoint + 1px})";
+$desktop-only:         "only screen and (min-width: #{$tablet-breakpoint + 1px}) and (max-width: #{$desktop-breakpoint})";
+$desktop-large-up:     "only screen and (min-width: #{$desktop-breakpoint + 1px})";
+$desktop-large-only:   "only screen and (min-width: #{$desktop-breakpoint + 1px}) and (max-width: #{$desktop-large-breakpoint})";
+$desktop-xlarge-up:    "only screen and (min-width: #{$desktop-large-breakpoint + 1px})";
+$desktop-xlarge-only:  "only screen and (min-width: #{$desktop-large-breakpoint + 1px}) and (max-width: #{$desktop-xlarge-breakpoint})";
+$desktop-xxlarge-up:   "only screen and (min-width: #{$desktop-xlarge-breakpoint + 1px})";
+
+$landscape:  "only screen and (orientation: landscape)";
+$portrait:   "only screen and (orientation: portrait)";
+$retina:     "only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min--moz-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (min-device-pixel-ratio: 2), only screen and (min-resolution: 192dpi), only screen and (min-resolution: 2dppx)";

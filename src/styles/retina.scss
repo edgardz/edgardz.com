@@ -1,0 +1,11 @@
+@import './responsive.scss';
+
+@mixin retina-image($image, $ext:"png") {
+  background: transparent center center no-repeat;
+  background-image: url("#{$image}.#{$ext}");
+  background-size: contain;
+
+  @media #{$retina} {
+    background-image: url("#{$image}@2x.#{$ext}");
+  }
+}

@@ -1,0 +1,31 @@
+@font-face {
+  font-family: 'monospace';
+  src: url('./assets/fonts/anonymous-pro-regular.woff2') format('woff2'),
+  url('./assets/fonts/anonymous-pro-regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'bold';
+  src: url('./assets/fonts/avenir-next-bold.woff2') format('woff2'),
+  url('./assets/fonts/avenir-next-bold.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'regular';
+  src: url('./assets/fonts/avenir-next-regular.woff2') format('woff2'),
+  url('./assets/fonts/avenir-next-regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'light';
+  src: url('./assets/fonts/avenir-next-ultra-light.woff2') format('woff2'),
+  url('./assets/fonts/avenir-next-ultra-light.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
